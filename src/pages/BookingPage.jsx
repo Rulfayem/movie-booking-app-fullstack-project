@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 
 function BookingPage() {
     const rows = 6;
@@ -8,19 +7,17 @@ function BookingPage() {
     const seatPrice = 20;
 
     const [selectedSeats, setSelectedSeats] = useState([]);
-    const [bookedSeats, setBookedSeats] = useState([]); // NEW
-    const [bookings, setBookings] = useState([]); // NEW
-    const [showTime, setShowTime] = useState(""); // NEW
-    const [editingBookingId, setEditingBookingId] = useState(null); // NEW
-
-    const navigate = useNavigate(); // NEW
+    const [bookedSeats, setBookedSeats] = useState([]);
+    const [bookings, setBookings] = useState([]);
+    const [showTime, setShowTime] = useState("");
+    const [editingBookingId, setEditingBookingId] = useState(null);
 
     //fetch already booked seats
     useEffect(() => {
         fetch("https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings")
             .then(res => res.json())
             .then(data => {
-                setBookings(data); // NEW
+                setBookings(data);
                 const allSeats = data.flatMap(booking =>
                     typeof booking.seats === "string"
                         ? JSON.parse(booking.seats)
@@ -34,6 +31,7 @@ function BookingPage() {
     //handles choosing seating choice
     const toggleSeat = (seatId) => {
         if (bookedSeats.includes(seatId) && !selectedSeats.includes(seatId)) return;
+
         if (selectedSeats.includes(seatId)) {
             setSelectedSeats(selectedSeats.filter(seat => seat !== seatId));
         } else {
@@ -43,14 +41,14 @@ function BookingPage() {
 
     //handles confirming booking 
     const handleConfirm = async () => {
-        const total = selectedSeats.length * seatPrice;
+        const totalPrice = selectedSeats.length * seatPrice;
 
         if (!showTime) {
             alert("Please enter a show time");
             return;
         }
         const confirmBooking = window.confirm(
-            `You selected ${selectedSeats.length} seat(s).\nTotal price: RM${total}\n\nConfirm booking?`
+            `You selected ${selectedSeats.length} seat(s).\nTotal price: RM${totalPrice}\n\nConfirm booking?`
         );
         if (!confirmBooking) return;
         try {
@@ -61,7 +59,7 @@ function BookingPage() {
                 },
                 body: JSON.stringify({
                     seats: selectedSeats,
-                    totalPrice: total,
+                    totalPrice: totalPrice,
                     showTime: showTime
                 })
             });
@@ -82,7 +80,7 @@ function BookingPage() {
 
     //update booking
     const handleUpdate = async () => {
-        const total = selectedSeats.length * seatPrice;
+        const totalPrice = selectedSeats.length * seatPrice;
 
         try {
             const response = await fetch(`https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings/${editingBookingId}`, {
@@ -92,7 +90,7 @@ function BookingPage() {
                 },
                 body: JSON.stringify({
                     seats: selectedSeats,
-                    totalPrice: total,
+                    totalPrice: totalPrice,
                     showTime: showTime
                 })
             });
@@ -118,9 +116,7 @@ function BookingPage() {
             await fetch(`https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings/${id}`, {
                 method: "DELETE"
             });
-
             refreshData();
-
         } catch (error) {
             console.error("Error deleting:", error);
         }
@@ -130,7 +126,6 @@ function BookingPage() {
     const refreshData = async () => {
         const updated = await fetch("https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings")
             .then(res => res.json());
-
         setBookings(updated);
         const allSeats = updated.flatMap(b =>
             typeof b.seats === "string"
@@ -143,14 +138,8 @@ function BookingPage() {
     return (
         <div style={{ padding: "40px", textAlign: "center", color: "white", background: "#111", minHeight: "100vh" }}>
 
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: "900px", margin: "0 auto 30px auto" }}>
-                <Button variant="secondary" onClick={() => navigate("/")}>
-                    ← Back to Home
-                </Button>
-
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", maxWidth: "900px", margin: "0 auto 30px auto" }}>
                 <h1 style={{ margin: 0 }}>Select Your Seats</h1>
-
-                <div style={{ width: "120px" }}></div>
             </div>
 
             {/* screen indicator */}
@@ -176,7 +165,7 @@ function BookingPage() {
                 </div>
             </div>
 
-            {/* GRID */}
+            {/* seating system made by grid */}
             <div
                 style={{
                     display: "grid",
@@ -232,7 +221,6 @@ function BookingPage() {
                     }}
                 />
                 <br />
-
                 {editingBookingId ? (
                     <Button variant="warning" onClick={handleUpdate}>
                         Update Booking

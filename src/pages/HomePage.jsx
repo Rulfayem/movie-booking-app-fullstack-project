@@ -1,11 +1,8 @@
-import { Navbar, Container, Button } from "react-bootstrap";
-import logoImage from "../assets/movie-coding-logo.png";
+import { Button } from "react-bootstrap";
 import movieImage from "../assets/ironlungmarkiplier.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
-    const siteLogo = logoImage;
-    const siteTitle = "Alfaim's Awe-Inspiring Movie Multiplex!";
     const mainMovieImage = movieImage;
     const isLoggedIn = false;
     const navigate = useNavigate();
@@ -24,57 +21,23 @@ function HomePage() {
             style={{
                 //super cool moody dark gradient background
                 background: "linear-gradient(to bottom, #1c1c1c, #0f0f0f)",
-                minHeight: "100vh",
+                height: "100vh",
+                overflow: "hidden",
                 color: "white",
                 fontFamily: "Arial, sans-serif",
                 display: "flex",
                 flexDirection: "column"
             }}
         >
-            {/* beginning of navbar stuff */}
-            <Navbar bg="dark" variant="dark" style={{ padding: "12px 0" }}>
-                <Container fluid className="d-flex justify-content-between">
-
-                    {/* controls site logo and title*/}
-                    <div className="d-flex align-items-center">
-                        <img
-                            src={siteLogo}
-                            alt="logo"
-                            style={{ width: "42px", marginRight: "12px" }}
-                        />
-                        <Navbar.Brand style={{ fontWeight: "bold", fontSize: "18px" }}>
-                            {siteTitle}
-                        </Navbar.Brand>
-                    </div>
-                    <div>
-                        {/* login button */}
-                        <Link to="/login">
-                            <Button variant="outline-light" className="me-2">
-                                Login
-                            </Button>
-                        </Link>
-                        {/* signup button */}
-                        <Link to="/signup">
-                            <Button variant="light">
-                                Sign Up
-                            </Button>
-                        </Link>
-
-                    </div>
-
-                </Container>
-            </Navbar>
-            {/* end of navbar stuff */}
-
-            {/* movie image */}
+            {/* controls entire top row layout */}
             <div
                 style={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "flex-start",
-                    padding: "80px 40px",
-                    flex: "1",
-                    gap: "40px"
+                    padding: "20px 40px",
+                    gap: "20px",
+                    overflow: "hidden"
                 }}
             >
                 {/* left side column content */}
@@ -82,7 +45,8 @@ function HomePage() {
                     style={{
                         width: "220px",
                         color: "#ccc",
-                        textAlign: "left"
+                        textAlign: "left",
+                        alignSelf: "flex-start"
                     }}
                 >
                     <h4 style={{ color: "#fff", marginBottom: "15px" }}>Details</h4>
@@ -91,7 +55,7 @@ function HomePage() {
                     <p><strong>Release:</strong> 2026</p>
                 </div>
 
-                {/* middle column content, picture and booking and stuff */}
+                {/* middle column content */}
                 <div style={{ textAlign: "center", flex: "1" }}>
                     <img
                         src={mainMovieImage}
@@ -99,21 +63,21 @@ function HomePage() {
                         style={{
                             width: "70%",
                             maxWidth: "900px",
+                            maxHeight: "45vh",
+                            objectFit: "cover",
                             borderRadius: "14px",
-
-                            //best new effect ever
                             boxShadow: "0 0 30px rgba(255, 0, 0, 0.35)",
-                            marginBottom: "30px"
+                            marginBottom: "20px"
                         }}
                     />
 
-                    {/* movie description below image */}
+                    {/* movie description */}
                     <div
                         style={{
                             maxWidth: "600px",
                             margin: "0 auto",
                             textAlign: "center",
-                            marginBottom: "25px"
+                            marginBottom: "15px"
                         }}
                     >
                         <h2
@@ -147,7 +111,7 @@ function HomePage() {
 
                     <h2
                         style={{
-                            marginBottom: "25px",
+                            marginBottom: "15px",
                             fontWeight: "600",
                             letterSpacing: "2px",
                             color: "#ddd",
@@ -167,7 +131,6 @@ function HomePage() {
                             fontWeight: "600",
                             letterSpacing: "1px",
                             borderRadius: "8px",
-
                             boxShadow: "0 0 20px rgba(255, 0, 0, 0.5)",
                             transition: "0.2s"
                         }}
@@ -176,11 +139,12 @@ function HomePage() {
                     </Button>
                 </div>
 
-                {/* right side column content */}
+                {/* right side column */}
                 <div
                     style={{
                         width: "220px",
-                        textAlign: "center"
+                        textAlign: "center",
+                        alignSelf: "flex-start"
                     }}
                 >
                     <h4 style={{ color: "#fff", marginBottom: "15px" }}>Rating</h4>
@@ -191,7 +155,7 @@ function HomePage() {
                 </div>
             </div>
 
-            {/* things at very bottom of page */}
+            {/* bottom footer info */}
             <div
                 style={{
                     padding: "30px 20px",
