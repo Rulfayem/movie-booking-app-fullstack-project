@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function HomePage() {
     const mainMovieImage = movieImage;
-    const isLoggedIn = false;
+    const isLoggedIn = !!localStorage.getItem("token");
     const navigate = useNavigate();
 
     //handles book seat button
@@ -60,6 +60,8 @@ function HomePage() {
 
                 {/* middle column content */}
                 <div style={{ textAlign: "center", flex: "1" }}>
+
+                    {/* movie poster image */}
                     <img
                         src={mainMovieImage}
                         alt="movie"
@@ -102,14 +104,16 @@ function HomePage() {
                             In a post-apocalyptic future after "The Quiet Rapture" event, a convict explores a
                             blood ocean on a desolate moon using a submarine called the "Iron Lung" to search for missing stars/planets.
                         </p>
-                        <p
-                            style={{
-                                fontSize: "14px",
-                                color: "#888"
-                            }}
-                        >
-                            ⚠️ You must be logged in to book a seat
-                        </p>
+                        {!isLoggedIn && (
+                            <p
+                                style={{
+                                    fontSize: "14px",
+                                    color: "#888"
+                                }}
+                            >
+                                ⚠️ You must be logged in to book a seat
+                            </p>
+                        )}
                     </div>
 
                     <h2

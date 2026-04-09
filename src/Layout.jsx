@@ -5,6 +5,12 @@ import logoImage from "./assets/movie-coding-logo.png";
 function Layout() {
     const siteLogo = logoImage;
     const siteTitle = "Alfaim's Awe-Inspiring Movie Multiplex!";
+    const isLoggedIn = !!localStorage.getItem("token");
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+    };
 
     return (
         <>
@@ -28,21 +34,28 @@ function Layout() {
                         </Navbar.Brand>
                     </div>
 
-                    {/* login + signup button shown top right */}
+                    {/* login + signup + logout button shown top right */}
                     <div>
-                        <Link to="/login">
-                            <Button variant="outline-light" className="me-2">
-                                Login
-                            </Button>
-                        </Link>
+                        {!isLoggedIn ? (
+                            <>
+                                <Link to="/login">
+                                    <Button variant="outline-light" className="me-2">
+                                        Login
+                                    </Button>
+                                </Link>
 
-                        <Link to="/signup">
-                            <Button variant="light">
-                                Sign Up
+                                <Link to="/signup">
+                                    <Button variant="light">
+                                        Sign Up
+                                    </Button>
+                                </Link>
+                            </>
+                        ) : (
+                            <Button variant="danger" onClick={handleLogout}>
+                                Logout
                             </Button>
-                        </Link>
+                        )}
                     </div>
-
                 </Container>
             </Navbar>
 
