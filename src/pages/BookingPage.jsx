@@ -14,10 +14,22 @@ function BookingPage() {
 
     //fetch already booked seats
     useEffect(() => {
-        fetch("https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings")
+        const token = localStorage.getItem("token");
+
+        //get user's specific bookings
+        fetch("https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings", {
+            headers: {
+                authorization: token
+            }
+        })
+            .then(res => res.json())
+            .then(data => setBookings(data))
+            .catch(err => console.error(err));
+
+        //getting all booked seats
+        fetch("https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/all-bookings")
             .then(res => res.json())
             .then(data => {
-                setBookings(data);
                 const allSeats = data.flatMap(booking =>
                     typeof booking.seats === "string"
                         ? JSON.parse(booking.seats)
@@ -25,7 +37,8 @@ function BookingPage() {
                 );
                 setBookedSeats(allSeats);
             })
-            .catch(err => console.error("Error fetching bookings:", err));
+            .catch(err => console.error(err));
+
     }, []);
 
     //handles choosing seating choice
@@ -52,10 +65,12 @@ function BookingPage() {
         );
         if (!confirmBooking) return;
         try {
+            const token = localStorage.getItem("token");
             const response = await fetch("https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "authorization": token
                 },
                 body: JSON.stringify({
                     seats: selectedSeats,
@@ -83,10 +98,13 @@ function BookingPage() {
         const totalPrice = selectedSeats.length * seatPrice;
 
         try {
+            const token = localStorage.getItem("token");
+
             const response = await fetch(`https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings/${editingBookingId}`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    authorization: token
                 },
                 body: JSON.stringify({
                     seats: selectedSeats,
@@ -113,8 +131,13 @@ function BookingPage() {
         if (!confirmDelete) return;
 
         try {
+            const token = localStorage.getItem("token");
+
             await fetch(`https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    authorization: token
+                }
             });
             refreshData();
         } catch (error) {
@@ -124,20 +147,27 @@ function BookingPage() {
 
     //refresh helper
     const refreshData = async () => {
-        const updated = await fetch("https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings")
+        const token = localStorage.getItem("token");
+        const updatedBookings = await fetch("https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/bookings", {
+            headers: { authorization: token }
+        }).then(res => res.json());
+        setBookings(Array.isArray(updatedBookings) ? updatedBookings : []);
+
+        const allBookings = await fetch("https://c70b61c0-56c9-4ea6-bbc1-2ecbe389ae5d-00-1uyiawojgytyw.sisko.replit.dev/all-bookings")
             .then(res => res.json());
-        setBookings(updated);
-        const allSeats = updated.flatMap(b =>
-            typeof b.seats === "string"
-                ? JSON.parse(b.seats)
-                : b.seats
-        );
+
+        const allSeats = Array.isArray(allBookings)
+            ? allBookings.flatMap(booking =>
+                typeof booking.seats === "string"
+                    ? JSON.parse(booking.seats)
+                    : booking.seats
+            )
+            : [];
         setBookedSeats(allSeats);
     };
 
     return (
         <div style={{ padding: "40px", textAlign: "center", color: "white", background: "#111", minHeight: "100vh" }}>
-
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", maxWidth: "900px", margin: "0 auto 30px auto" }}>
                 <h1 style={{ margin: 0 }}>Select Your Seats</h1>
             </div>
@@ -246,7 +276,7 @@ function BookingPage() {
 
             {/* bookings list */}
             <div style={{ marginTop: "50px" }}>
-                <h2>All Bookings</h2>
+                <h2>Your Bookings</h2>
                 <div style={{
                     display: "flex",
                     flexWrap: "wrap",

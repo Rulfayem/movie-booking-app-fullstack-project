@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
-    const navigate = useNavigate();
 
     const pageStyle = {
         background: "linear-gradient(to bottom, #1c1c1c, #0f0f0f)",
@@ -41,7 +39,7 @@ function LoginPage() {
                 setMessage("Login successful!");
 
                 setTimeout(() => {
-                    navigate("/");
+                    window.location.href = "/";
                 }, 1000);
             } else {
                 setMessage("Invalid credentials");
