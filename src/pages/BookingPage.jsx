@@ -207,9 +207,7 @@ function BookingPage() {
                 <p>Selected Seats: {selectedSeats.length}</p>
                 <p>Total Price: RM{selectedSeats.length * seatPrice}</p>
 
-                <input
-                    type="text"
-                    placeholder="Enter show time"
+                <select
                     value={showTime}
                     onChange={(e) => setShowTime(e.target.value)}
                     style={{
@@ -217,9 +215,18 @@ function BookingPage() {
                         marginBottom: "10px",
                         width: "250px",
                         borderRadius: "5px",
-                        border: "none"
+                        border: "none",
+                        backgroundColor: "#222",
+                        color: "white",
+                        fontSize: "16px"
                     }}
-                />
+                >
+                    <option value="">-- Select a show time --</option>
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="1:30 PM">1:30 PM</option>
+                    <option value="5:00 PM">5:00 PM</option>
+                    <option value="9:30 PM">9:30 PM</option>
+                </select>
                 <br />
                 {editingBookingId ? (
                     <Button variant="warning" onClick={handleUpdate}>
