@@ -207,6 +207,7 @@ function BookingPage() {
                 <p>Selected Seats: {selectedSeats.length}</p>
                 <p>Total Price: RM{selectedSeats.length * seatPrice}</p>
 
+                {/* dropdown selection for showtime */}
                 <select
                     value={showTime}
                     onChange={(e) => setShowTime(e.target.value)}
@@ -246,56 +247,61 @@ function BookingPage() {
             {/* bookings list */}
             <div style={{ marginTop: "50px" }}>
                 <h2>All Bookings</h2>
-
-                {bookings.map((booking) => (
-                    <div
-                        key={booking.id}
-                        style={{
-                            background: "#222",
-                            padding: "15px",
-                            margin: "10px auto",
-                            maxWidth: "400px",
-                            borderRadius: "8px"
-                        }}
-                    >
-                        <p>ID: {booking.id}</p>
-                        <p>
-                            Seats: {(typeof booking.seats === "string"
-                                ? JSON.parse(booking.seats)
-                                : booking.seats
-                            ).join(", ")}
-                        </p>
-                        <p>Time: {booking.show_time}</p>
-                        <p>Total: RM{booking.total_price}</p>
-
-                        <Button
-                            variant="warning"
-                            onClick={() => {
-                                setEditingBookingId(booking.id);
-
-                                const seats = typeof booking.seats === "string"
-                                    ? JSON.parse(booking.seats)
-                                    : booking.seats;
-
-                                setSelectedSeats(seats);
-                                setShowTime(booking.show_time);
-                                setBookedSeats(prev =>
-                                    prev.filter(seat => !seats.includes(seat))
-                                );
+                <div style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: "15px"
+                }}>
+                    {bookings.map((booking) => (
+                        <div
+                            key={booking.id}
+                            style={{
+                                background: "#222",
+                                padding: "15px",
+                                width: "250px",
+                                borderRadius: "8px"
                             }}
-                            style={{ marginRight: "10px" }}
                         >
-                            Edit
-                        </Button>
+                            <p>ID: {booking.id}</p>
+                            <p>
+                                Seats: {(typeof booking.seats === "string"
+                                    ? JSON.parse(booking.seats)
+                                    : booking.seats
+                                ).join(", ")}
+                            </p>
+                            <p>Time: {booking.show_time}</p>
+                            <p>Total: RM{booking.total_price}</p>
 
-                        <Button
-                            variant="danger"
-                            onClick={() => handleDelete(booking.id)}
-                        >
-                            Delete
-                        </Button>
-                    </div>
-                ))}
+                            <Button
+                                variant="warning"
+                                onClick={() => {
+                                    setEditingBookingId(booking.id);
+
+                                    const seats = typeof booking.seats === "string"
+                                        ? JSON.parse(booking.seats)
+                                        : booking.seats;
+
+                                    setSelectedSeats(seats);
+                                    setShowTime(booking.show_time);
+                                    setBookedSeats(prev =>
+                                        prev.filter(seat => !seats.includes(seat))
+                                    );
+                                }}
+                                style={{ marginRight: "10px" }}
+                            >
+                                Edit
+                            </Button>
+
+                            <Button
+                                variant="danger"
+                                onClick={() => handleDelete(booking.id)}
+                            >
+                                Delete
+                            </Button>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
