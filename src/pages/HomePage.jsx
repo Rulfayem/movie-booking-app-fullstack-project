@@ -183,7 +183,6 @@ function HomePage() {
                     }}
                 >
                     <h4 style={{ color: "#fff", marginBottom: "15px" }}>Reviews</h4>
-
                     <p style={{ fontSize: "28px", color: "#ff4444", fontWeight: "bold" }}>
                         ★ 7.3
                     </p>
