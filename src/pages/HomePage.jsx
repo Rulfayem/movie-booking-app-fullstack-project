@@ -21,8 +21,8 @@ function HomePage() {
             style={{
                 //super cool moody dark gradient background
                 background: "linear-gradient(to bottom, #1c1c1c, #0f0f0f)",
-                height: "100vh",
-                overflow: "hidden",
+                minHeight: "100vh",
+                overflow: "auto",
                 color: "white",
                 fontFamily: "Arial, sans-serif",
                 display: "flex",
@@ -38,13 +38,14 @@ function HomePage() {
                     alignItems: "flex-start",
                     padding: "20px 40px",
                     gap: "20px",
-                    overflow: "hidden"
                 }}
             >
                 {/* left side column content */}
                 <div
                     style={{
-                        width: "220px",
+                        width: "180px",
+                        minWidth: "120px",
+                        flexShrink: 1,
                         color: "#ccc",
                         textAlign: "right",
                         alignSelf: "center"
@@ -66,9 +67,9 @@ function HomePage() {
                         src={mainMovieImage}
                         alt="movie"
                         style={{
-                            width: "70%",
+                            width: "90%",
                             maxWidth: "900px",
-                            maxHeight: "40vh",
+                            maxHeight: "35vh",
                             objectFit: "cover",
                             borderRadius: "14px",
                             boxShadow: "0 0 30px rgba(255, 0, 0, 0.35)",
@@ -177,7 +178,9 @@ function HomePage() {
                 {/* right side column */}
                 <div
                     style={{
-                        width: "220px",
+                        width: "180px",
+                        minWidth: "120px",
+                        flexShrink: 1,
                         textAlign: "left",
                         alignSelf: "center"
                     }}
