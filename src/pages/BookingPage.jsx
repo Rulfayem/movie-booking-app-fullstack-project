@@ -202,7 +202,8 @@ function BookingPage() {
                     gridTemplateColumns: `repeat(${columns}, 1fr)`,
                     gap: "8px",
                     maxWidth: "900px",
-                    margin: "0 auto"
+                    margin: "0 auto",
+                    overflow: "auto"
                 }}
             >
                 {[...Array(rows * columns)].map((_, index) => {
@@ -215,8 +216,8 @@ function BookingPage() {
                             key={seatId}
                             onClick={() => toggleSeat(seatId)}
                             style={{
-                                width: "30px",
-                                height: "30px",
+                                width: "100%",
+                                aspectRatio: 1,
                                 borderRadius: "4px",
                                 cursor: isBooked ? "not-allowed" : "pointer",
                                 backgroundColor: isBooked
